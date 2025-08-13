@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Log files
+*.log
+npm-debug.log*
+
+# Output files from the extension
+gmail_data_*.txt
+
+# OS-generated files
+.DS_Store

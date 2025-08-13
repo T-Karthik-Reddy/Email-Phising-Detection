@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>Gmail Downloader Icon Generator</h1>
+    <p>This page will help you generate PNG icons from the SVG file.</p>
+    
+    <div id="icon16"></div>
+    <div id="icon48"></div>
+    <div id="icon128"></div>
+    
+    <script>
+        // Load the SVG content
+        const svgContent = `<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4285f4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34a853;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)" stroke="#ffffff" stroke-width="4"/>
+  
+  <!-- Envelope icon -->
+  <path d="M30 40 L64 65 L98 40 L98 88 L30 88 Z" fill="white" opacity="0.9"/>
+  <path d="M30 40 L64 65 L98 40" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Download arrow -->
+  <path d="M64 75 L64 95 M56 87 L64 95 L72 87" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Gmail "M" -->
+  <path d="M45 50 L55 70 L65 55 L75 70 L85 50" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+        // Function to create icon at different sizes
+        function createIcon(size) {
+            const div = document.createElement('div');
+            div.innerHTML = svgContent;
+            const svg = div.querySelector('svg');
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            return div.innerHTML;
+        }
+
+        // Display icons
+        document.getElementById('icon16').innerHTML = createIcon(16);
+        document.getElementById('icon48').innerHTML = createIcon(48);
+        document.getElementById('icon128').innerHTML = createIcon(128);
+
+        // Instructions for manual icon creation
+        console.log('To create PNG icons:');
+        console.log('1. Right-click on each icon above');
+        console.log('2. Select "Save image as..."');
+        console.log('3. Save as icon16.png, icon48.png, and icon128.png');
+        console.log('4. Place them in the icons/ directory');
+    </script>
+</body>
+</html> 

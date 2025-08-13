@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            width: 300px;
+            padding: 20px;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Liquid glass background effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+            animation: liquidFloat 6s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes liquidFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .download-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .download-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .download-section p {
+            margin: 0 0 15px 0;
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            width: 100%;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .status {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 11px;
+            line-height: 1.4;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info h4 {
+            margin: 0 0 5px 0;
+            font-size: 12px;
+        }
+
+        .info ul {
+            margin: 5px 0;
+            padding-left: 15px;
+        }
+
+        .info li {
+            margin-bottom: 3px;
+        }
+
+        /* Phishing Results Styles */
+        .phishing-results {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .phishing-results h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .score-low {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .score-medium {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .score-high {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .reasons-display {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .reasons-display .category {
+            margin-bottom: 8px;
+        }
+
+        .reasons-display .category-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .reasons-display .reason {
+            margin-left: 10px;
+            margin-bottom: 2px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Gmail Phishing Checker</h1>
+        <p>Check your Gmail emails for phishing indicators</p>
+    </div>
+
+    <div class="download-section">
+        <h3>📋 Email List</h3>
+        <p>Check metadata and preview content from all visible emails in your current Gmail view.</p>
+        <button id="downloadList" class="btn">Check Email List</button>
+    </div>
+
+    <div class="download-section">
+        <h3>📄 Detailed Email</h3>
+        <p>Check complete content of the currently opened email for phishing indicators.</p>
+        <button id="downloadDetail" class="btn btn-secondary">Check Current Email</button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <!-- Phishing Score Results -->
+    <div id="phishingResults" class="phishing-results" style="display: none;">
+        <h4>🔍 Phishing Analysis Results</h4>
+        <div id="scoreDisplay" class="score-display"></div>
+        <div id="reasonsDisplay" class="reasons-display"></div>
+    </div>
+
+    <!-- Debug button (remove after testing) -->
+    <div class="download-section">
+        <button id="testAnalysis" class="btn btn-secondary" style="margin-top: 10px;">Test Analysis Display</button>
+    </div>
+
+    <div class="info">
+        <h4>ℹ️ How to use:</h4>
+        <ul>
+            <li>Navigate to Gmail in your browser</li>
+            <li>Choose the type of email to check</li>
+            <li>Click the check button</li>
+            <li>View phishing analysis results</li>
+        </ul>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
